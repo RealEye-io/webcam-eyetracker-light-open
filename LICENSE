@@ -1,0 +1,41 @@
+RealEye Webcam EyeTracker Light Open — Dual License Notice
+
+Copyright (c) 2025-2026 RealEye sp. z o.o.
+
+This repository is available under a dual-license model. You may use this
+project under either of the following, at your option:
+
+1. The GNU Affero General Public License, version 3 or (at your option) any
+	 later version, as described in `LICENSE-AGPL.md`; or
+2. The separate commercial license terms described in
+	 `LICENSE-COMMERCIAL.md`.
+
+## Which option should I choose?
+
+- Choose the **AGPL option** if you are comfortable complying with copyleft
+	and network-source-disclosure obligations for modified versions.
+- Choose the **commercial option** if you want to use the project without
+	AGPL obligations, including for proprietary or otherwise closed-source
+	products and services.
+
+## Free commercial use thresholds
+
+The commercial license includes a **no-fee commercial path** for:
+
+- companies whose qualifying valuation or fallback revenue metric does not
+	exceed **USD $1,000,000**, including Affiliates; and
+- university, academic, and nonprofit research projects whose grant-funded
+	budget for the project or lab using the software does not exceed
+	**USD $1,000,000**.
+
+See `LICENSE-COMMERCIAL.md` for the exact definitions and transition rules.
+
+## Third-party software
+
+Third-party dependencies and model files remain subject to their own licenses.
+See `THIRD_PARTY_NOTICES.md` and `public/models/README.md`.
+
+## No warranty
+
+UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING, THE SOFTWARE IS
+PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.

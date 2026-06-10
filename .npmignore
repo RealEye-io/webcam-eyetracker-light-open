@@ -1,0 +1,44 @@
+# Demo app (not shipped in npm package)
+apps/
+
+# E2E tests (require dev server + external services)
+tests/e2e/
+tests/perf/
+
+# Benchmark scripts
+scripts/
+
+# Experiment reports
+reports/
+
+# Internal docs
+PROJECT_AGENTS.md
+
+# Build output (except dist/lib which is in files:)
+dist/demo/
+
+# Test artifacts
+coverage/
+test-results/
+playwright-report/
+
+# IDE
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# TypeScript
+*.tsbuildinfo

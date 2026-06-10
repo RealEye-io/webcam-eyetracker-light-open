@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Reports
+reports/*.html
+
+# Test output
+coverage/
+test-results/
+playwright-report/
+
+# Model files (downloaded separately)
+public/models/*.tflite
+public/models/*.task
+
+# Logs
+*.log
+npm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+
+# npm pack artifact
+*.tgz
+-pnpm-lock.yaml

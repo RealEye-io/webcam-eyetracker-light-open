@@ -1,0 +1,99 @@
+{
+    "name": "@realeye-io/webcam-eyetracker-light-open",
+    "version": "1.0.0",
+    "description": "RealEye Webcam EyeTracker Light Open — lightweight browser-based webcam eye-tracker using MediaPipe and ridge regression for gaze prediction",
+    "main": "dist/lib/index.js",
+    "module": "dist/lib/index.js",
+    "types": "dist/lib/index.d.ts",
+    "exports": {
+        ".": {
+            "types": "./dist/lib/index.d.ts",
+            "import": "./dist/lib/index.js",
+            "require": "./dist/lib/index.js"
+        }
+    },
+    "files": [
+        "dist",
+        "lib",
+        "tests/unit",
+        "public/models"
+    ],
+    "scripts": {
+        "dev": "webpack serve --mode development",
+        "build": "npm run build:lib && npm run build:demo",
+        "build:lib": "tsc -p tsconfig.lib.json",
+        "build:demo": "webpack --mode production",
+        "download-models": "node scripts/download-models.mjs",
+        "postinstall": "node scripts/download-models.mjs",
+        "test": "npm run test:unit && npm run test:e2e && npm run test:css",
+        "test:unit": "vitest run --dir tests/unit",
+        "test:e2e": "playwright test --project=demo-e2e",
+        "test:css": "playwright test --project=css-rendering",
+        "test:e2e:demo": "playwright test --project=demo-e2e",
+        "test:screenshot": "REIO_WEBCAM_ET_LIGHT_PORT=8089 playwright test --project=screenshot-capture --config=playwright.config.ts",
+        "test:watch": "vitest --dir tests/unit",
+        "lint": "eslint lib apps tests --ext .ts,.tsx",
+        "lint:fix": "eslint lib apps tests --ext .ts,.tsx --fix",
+        "typecheck": "tsc --noEmit",
+        "prepublishOnly": "npm run build:lib"
+    },
+    "keywords": [
+        "eye-tracking",
+        "webcam",
+        "gaze",
+        "ridge-regression",
+        "mediapipe",
+        "gaze-detection",
+        "browser",
+        "eyetracker",
+        "computer-vision"
+    ],
+    "author": "RealEye sp. z o.o.",
+    "license": "SEE LICENSE IN LICENSE",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/RealEye-io/webcam-eyetracker-light-open.git"
+    },
+    "homepage": "https://github.com/RealEye-io/webcam-eyetracker-light-open",
+    "bugs": {
+        "url": "https://github.com/RealEye-io/webcam-eyetracker-light-open/issues"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "sideEffects": [
+        "*.css"
+    ],
+    "dependencies": {
+        "@mediapipe/tasks-vision": "^0.10.18",
+        "ml-matrix": "^6.12.1"
+    },
+    "devDependencies": {
+        "@playwright/test": "^1.49.0",
+        "@realeye-io/realtesting-camera": "^1.0.3",
+        "@types/node": "^22.10.1",
+        "@types/react": "^18.3.12",
+        "@types/react-dom": "^18.3.1",
+        "@typescript-eslint/eslint-plugin": "^8.17.0",
+        "@typescript-eslint/parser": "^8.17.0",
+        "copy-webpack-plugin": "^12.0.2",
+        "css-loader": "^7.1.2",
+        "eslint": "^9.16.0",
+        "html-webpack-plugin": "^5.6.3",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "sharp": "^0.34.5",
+        "style-loader": "^4.0.0",
+        "ts-loader": "^9.5.1",
+        "tsx": "^4.21.0",
+        "typescript": "^5.7.2",
+        "typescript-eslint": "^8.49.0",
+        "vitest": "^2.1.8",
+        "webpack": "^5.97.1",
+        "webpack-cli": "^5.1.4",
+        "webpack-dev-server": "^5.1.0"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}
