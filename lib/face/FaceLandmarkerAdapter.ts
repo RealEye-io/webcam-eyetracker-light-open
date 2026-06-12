@@ -31,8 +31,8 @@ import {
 } from '@mediapipe/tasks-vision';
 import type { FaceDetectionResult, BoundingBox, FaceKeypoint, FaceBlendshapes } from '../types';
 
-const DEFAULT_MODEL_PATH = '/models/face_landmarker.task';
-const DEFAULT_WASM_PATH = '/wasm';
+const DEFAULT_MODEL_PATH = 'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task';
+const DEFAULT_WASM_PATH = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.18/wasm';
 const DEFAULT_MIN_CONFIDENCE = 0.5;
 type VisionFileset = Awaited<ReturnType<typeof FilesetResolver.forVisionTasks>>;
 

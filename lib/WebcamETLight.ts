@@ -33,38 +33,14 @@ import {
     type FaceDetectionResult,
 } from './types';
 
-// Declare webpack-injected constants
-declare const __WEBPACK_PUBLIC_PATH__: string | undefined;
-
-// Determine base path based on deployment environment
-const getBasePath = (): string => {
-    // Check for webpack DefinePlugin injected constant (compile-time)
-    if (typeof __WEBPACK_PUBLIC_PATH__ !== 'undefined') {
-        const basePath = __WEBPACK_PUBLIC_PATH__.endsWith('/')
-            ? __WEBPACK_PUBLIC_PATH__.slice(0, -1)
-            : __WEBPACK_PUBLIC_PATH__;
-        console.log('[WebcamETLight] Using __WEBPACK_PUBLIC_PATH__:', basePath);
-        return basePath;
-    }
-
-    // Fallback: check webpack's runtime public path
-    if (typeof window !== 'undefined') {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const publicPath = (window as any).__webpack_public_path__ || '';
-        if (publicPath && publicPath !== '/') {
-            const basePath = publicPath.endsWith('/') ? publicPath.slice(0, -1) : publicPath;
-            console.log('[WebcamETLight] Using __webpack_public_path__:', basePath);
-            return basePath;
-        }
-    }
-
-    console.log('[WebcamETLight] Using root path (development)');
-    return ''; // Development or no publicPath set
-};
+// CDN URLs for MediaPipe models and WASM runtime
+const MEDIAPIPE_WASM_CDN = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.18/wasm';
+const FACE_LANDMARKER_CDN = 'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task';
+const BLAZE_FACE_CDN = 'https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite';
 
 const DEFAULT_CONFIG: Required<WebcamETLightConfig> = {
-    modelPath: `${getBasePath()}/models/face_landmarker.task`,
-    wasmPath: `${getBasePath()}/wasm`,
+    modelPath: FACE_LANDMARKER_CDN,
+    wasmPath: MEDIAPIPE_WASM_CDN,
     faceDetectorMode: 'landmarker', // Use Face Landmarker with iris tracking
     useLandmarks: true, // Use landmarks + eye images
     eyeWidth: EYE_INPUT_WIDTH, // Eye crop width from constants
@@ -106,10 +82,9 @@ export class WebcamETLight {
         // Determine model path based on mode if not explicitly provided
         let modelPath = this.config.modelPath;
         if (!config.modelPath) {
-            const basePath = getBasePath();
             modelPath = this.config.faceDetectorMode === 'blazeface'
-                ? `${basePath}/models/blaze_face_short_range.tflite`
-                : `${basePath}/models/face_landmarker.task`;
+                ? BLAZE_FACE_CDN
+                : FACE_LANDMARKER_CDN;
         }
 
         console.log('[WebcamETLight] Config:', {

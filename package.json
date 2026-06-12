@@ -13,10 +13,9 @@
         }
     },
     "files": [
-        "dist",
+        "dist/lib",
         "lib",
-        "tests/unit",
-        "public/models"
+        "tests/unit"
     ],
     "scripts": {
         "dev": "webpack serve --mode development",
@@ -24,7 +23,6 @@
         "build:lib": "tsc -p tsconfig.lib.json",
         "build:demo": "webpack --mode production",
         "download-models": "node scripts/download-models.mjs",
-        "postinstall": "node scripts/download-models.mjs",
         "test": "npm run test:unit && npm run test:e2e && npm run test:css",
         "test:unit": "vitest run --dir tests/unit",
         "test:e2e": "playwright test --project=demo-e2e",

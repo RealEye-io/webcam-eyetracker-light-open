@@ -27,7 +27,7 @@ This dual-licensed library is the core technology behind [RealEye.io](https://ww
 
 - **Zero setup** — no eye-tracking hardware required
 - **Pure browser execution** — runs entirely client-side
-- **No CDN dependencies** — all models served locally
+- **CDN-loaded models** — MediaPipe models and WASM runtime load from CDN by default (no local model files needed)
 - **17-point calibration** — proven optimal pattern
 - **Head-pose compensation** — learned during calibration
 - **TypeScript-first** — full type definitions included
@@ -74,6 +74,8 @@ The demo app provides a full interactive experience: camera preview, face detect
 
 ## 🚀 Quick Start
 
+MediaPipe models and WASM runtime are loaded from CDN by default — no local model files needed. Just install and initialize:
+
 ```bash
 npm install @realeye-io/webcam-eyetracker-light-open
 ```
@@ -86,7 +88,7 @@ import {
   type CalibrationSample,
 } from '@realeye-io/webcam-eyetracker-light-open';
 
-// Initialize
+// Initialize (loads models from CDN automatically)
 const tracker = new WebcamETLight({ delegate: 'GPU' });
 await tracker.initialize();
 
@@ -154,8 +156,10 @@ import { WebcamETLight, WebcamETLightConfig } from '@realeye-io/webcam-eyetracke
 const tracker = new WebcamETLight({
   delegate: 'GPU',              // 'GPU' | 'CPU'
   faceDetectorMode: 'landmarker', // 'landmarker' | 'blazeFace'
-  modelPath: 'models/face_landmarker.task',
-  wasmPath: 'wasm',
+  // modelPath and wasmPath default to CDN URLs
+  // Override with local paths if needed:
+  // modelPath: '/local/models/face_landmarker.task',
+  // wasmPath: '/local/wasm',
   runningMode: 'VIDEO',         // 'VIDEO' | 'IMAGE'
   ridgeLambda: 1e-5,
   minDetectionConfidence: 0.5,

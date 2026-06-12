@@ -114,14 +114,16 @@ export interface FaceBlendshapes {
  */
 export interface WebcamETLightConfig {
     /**
-     * Path to the MediaPipe Face Landmarker model bundle.
-     * Defaults to '/models/face_landmarker.task'
+     * Path to the MediaPipe model file.
+     * Defaults to CDN URL for Face Landmarker.
+     * Pass a local path or custom URL to override.
      */
     modelPath?: string;
 
     /**
-     * Path to the MediaPipe WASM files.
-     * Defaults to '/wasm'
+     * Path to the MediaPipe WASM runtime files.
+     * Defaults to CDN URL for MediaPipe tasks-vision WASM.
+     * Pass a local path or custom URL to override.
      */
     wasmPath?: string;
 

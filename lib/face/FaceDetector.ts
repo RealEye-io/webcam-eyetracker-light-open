@@ -19,9 +19,9 @@ import {
 import { BlazeFaceAdapter } from './BlazeFaceAdapter';
 import type { FaceDetectionResult } from '../types';
 
-const DEFAULT_LANDMARKER_MODEL_PATH = '/models/face_landmarker.task';
-const DEFAULT_BLAZEFACE_MODEL_PATH = '/models/blaze_face_short_range.tflite';
-const DEFAULT_WASM_PATH = '/wasm';
+const DEFAULT_LANDMARKER_MODEL_PATH = 'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task';
+const DEFAULT_BLAZEFACE_MODEL_PATH = 'https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite';
+const DEFAULT_WASM_PATH = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.18/wasm';
 const DEFAULT_MIN_CONFIDENCE = 0.5;
 
 export type FaceDetectorMode = 'landmarker' | 'blazeface';
