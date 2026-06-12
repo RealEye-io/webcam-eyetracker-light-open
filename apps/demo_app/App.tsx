@@ -379,29 +379,80 @@ export const App: React.FC = () => {
             return;
         }
 
+        const SAMPLE_WINDOW_MS = 500;
+        const SAMPLE_INTERVAL_MS = 16; // ~60fps sampling
+        let samplingTimeout: ReturnType<typeof setTimeout> | null = null;
+        let sampleInterval: ReturnType<typeof setInterval> | null = null;
+
         const handleClick = (event: MouseEvent) => {
-            const currentGaze = gazeRef.current;
-            if (!currentGaze) {
-                return;
+            const clickPoint = { x: event.clientX, y: event.clientY };
+            const gazeSamples: Array<{ x: number; y: number }> = [];
+
+            // Clear any previous sampling in progress
+            if (samplingTimeout) {
+                clearTimeout(samplingTimeout);
+                samplingTimeout = null;
+            }
+            if (sampleInterval) {
+                clearInterval(sampleInterval);
+                sampleInterval = null;
             }
 
-            const clickPoint = { x: event.clientX, y: event.clientY };
-            const distance = Math.hypot(clickPoint.x - currentGaze.x, clickPoint.y - currentGaze.y);
-            const id = lineIdRef.current++;
+            // Sample gaze every ~16ms for 500ms
+            sampleInterval = setInterval(() => {
+                const currentGaze = gazeRef.current;
+                if (currentGaze) {
+                    gazeSamples.push({ x: currentGaze.x, y: currentGaze.y });
+                }
+            }, SAMPLE_INTERVAL_MS);
 
-            const line: ClickAccuracyLine = {
-                id,
-                click: clickPoint,
-                gaze: currentGaze,
-                distance,
-            };
+            // After 500ms, compute the averaged gaze point and create the accuracy line
+            samplingTimeout = setTimeout(() => {
+                if (sampleInterval) {
+                    clearInterval(sampleInterval);
+                    sampleInterval = null;
+                }
 
-            setClickLines((prev) => [...prev, line]);
+                // Need at least one valid sample
+                if (gazeSamples.length === 0) {
+                    return;
+                }
+
+                // Compute mean
+                const meanX = gazeSamples.reduce((sum, s) => sum + s.x, 0) / gazeSamples.length;
+                const meanY = gazeSamples.reduce((sum, s) => sum + s.y, 0) / gazeSamples.length;
+
+                // Compute standard deviation
+                const varianceX = gazeSamples.reduce((sum, s) => sum + Math.pow(s.x - meanX, 2), 0) / gazeSamples.length;
+                const varianceY = gazeSamples.reduce((sum, s) => sum + Math.pow(s.y - meanY, 2), 0) / gazeSamples.length;
+                const stdDev = Math.sqrt((varianceX + varianceY) / 2);
+
+                const averagedGaze = { x: meanX, y: meanY };
+                const distance = Math.hypot(clickPoint.x - averagedGaze.x, clickPoint.y - averagedGaze.y);
+                const id = lineIdRef.current++;
+
+                const line: ClickAccuracyLine = {
+                    id,
+                    click: clickPoint,
+                    gaze: averagedGaze,
+                    distance,
+                    sampleCount: gazeSamples.length,
+                    sampleStdDev: stdDev,
+                };
+
+                setClickLines((prev) => [...prev, line]);
+            }, SAMPLE_WINDOW_MS);
         };
 
         window.addEventListener('click', handleClick);
         return () => {
             window.removeEventListener('click', handleClick);
+            if (samplingTimeout) {
+                clearTimeout(samplingTimeout);
+            }
+            if (sampleInterval) {
+                clearInterval(sampleInterval);
+            }
         };
     }, [isTracking]);
 

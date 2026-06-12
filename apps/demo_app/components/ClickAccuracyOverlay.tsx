@@ -10,6 +10,8 @@ export interface ClickAccuracyLine {
     click: { x: number; y: number };
     gaze: { x: number; y: number };
     distance: number;
+    sampleCount: number;
+    sampleStdDev: number;
 }
 
 interface ClickAccuracyOverlayProps {
@@ -61,7 +63,7 @@ export const ClickAccuracyOverlay: React.FC<ClickAccuracyOverlayProps> = ({ line
                         <circle className="click-point" cx={line.click.x} cy={line.click.y} r={6} />
                         <circle className="gaze-point" cx={line.gaze.x} cy={line.gaze.y} r={6} />
                         <text className="click-line-label" x={midX} y={midY - 8}>
-                            {`${Math.round(line.distance)} px`}
+                            {`${line.sampleCount} samples · ${Math.round(line.distance)} px`}
                         </text>
                     </g>
                 );
