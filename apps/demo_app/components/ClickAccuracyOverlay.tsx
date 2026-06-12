@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-RealEye-Commercial
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 export interface ClickAccuracyLine {
     id: number;
@@ -16,13 +16,17 @@ export interface ClickAccuracyLine {
 
 interface ClickAccuracyOverlayProps {
     lines: ClickAccuracyLine[];
+    isTracking: boolean;
 }
 
-export const ClickAccuracyOverlay: React.FC<ClickAccuracyOverlayProps> = ({ lines }) => {
+export const ClickAccuracyOverlay: React.FC<ClickAccuracyOverlayProps> = ({ lines, isTracking }) => {
     const [{ width, height }, setViewport] = useState(() => ({
         width: window.innerWidth,
         height: window.innerHeight,
     }));
+
+    const [mousePos, setMousePos] = useState<{ x: number; y: number } | null>(null);
+    const mousePosRef = useRef<{ x: number; y: number } | null>(null);
 
     useEffect(() => {
         const handleResize = () => {
@@ -35,7 +39,37 @@ export const ClickAccuracyOverlay: React.FC<ClickAccuracyOverlayProps> = ({ line
         };
     }, []);
 
-    if (lines.length === 0) {
+    useEffect(() => {
+        if (!isTracking) return;
+
+        const handleMouseMove = (e: MouseEvent) => {
+            mousePosRef.current = { x: e.clientX, y: e.clientY };
+            setMousePos(mousePosRef.current);
+        };
+
+        const handleMouseLeave = () => {
+            mousePosRef.current = null;
+            setMousePos(null);
+        };
+
+        const handleMouseEnter = () => {
+            if (mousePosRef.current) {
+                setMousePos(mousePosRef.current);
+            }
+        };
+
+        document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mouseleave', handleMouseLeave);
+        document.addEventListener('mouseenter', handleMouseEnter);
+
+        return () => {
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseleave', handleMouseLeave);
+            document.removeEventListener('mouseenter', handleMouseEnter);
+        };
+    }, [isTracking]);
+
+    if (!isTracking && lines.length === 0) {
         return null;
     }
 
@@ -47,6 +81,15 @@ export const ClickAccuracyOverlay: React.FC<ClickAccuracyOverlayProps> = ({ line
             viewBox={`0 0 ${width} ${height}`}
             aria-hidden="true"
         >
+            {isTracking && mousePos && (
+                <circle
+                    className="click-cursor-indicator"
+                    cx={mousePos.x}
+                    cy={mousePos.y}
+                    r={10}
+                />
+            )}
+
             {lines.map((line) => {
                 const midX = (line.click.x + line.gaze.x) / 2;
                 const midY = (line.click.y + line.gaze.y) / 2;

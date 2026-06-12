@@ -1269,7 +1269,7 @@ export const App: React.FC = () => {
                 />
             )}
 
-            <ClickAccuracyOverlay lines={clickLines} />
+            <ClickAccuracyOverlay lines={clickLines} isTracking={isTracking} />
 
             {/* Gaze visualization */}
             <GazeVisualization

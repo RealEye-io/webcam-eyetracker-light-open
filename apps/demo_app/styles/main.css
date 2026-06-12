@@ -1699,3 +1699,10 @@ body {
         transform: scale(0.97);
     }
 }
+
+.click-cursor-indicator {
+    fill: rgba(255, 140, 0, 0.35);
+    stroke: rgba(255, 140, 0, 0.9);
+    stroke-width: 2;
+    stroke-dasharray: 4 3;
+}
